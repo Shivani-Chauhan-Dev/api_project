@@ -26,17 +26,20 @@ with app.app_context():
 def auther_user():
 
     # print(request.data)
+    # print(type(request.data))
     a = json.loads(request.data)
-    # print(a)
-    id=a.get("new_id")
-    auther=a.get("auther")
-    email=a.get("email")
-    title=a.get("title")
-    date = a.get("date")
+    # print(type(a))
+    for create_auther in a:
+        # print(auther)
+        id=create_auther.get("new_id")
+        auther=create_auther.get("auther")
+        email=create_auther.get("email")
+        title=create_auther.get("title")
+        date = create_auther.get("date")
 
-    entry =AutherUser(id=id,auther=auther,email=email,title=title,date=date)
-    db.session.add(entry)
-    db.session.commit()
+        entry =AutherUser(id=id,auther=auther,email=email,title=title,date=date)
+        db.session.add(entry)
+        db.session.commit()
     
 
     return jsonify("success")
@@ -45,12 +48,14 @@ def auther_user():
 @app.route("/auther", methods=["GET"])
 def get_auther():
     auther = AutherUser.query.all()
-    # print(auther)
+    print(auther)
     new_list =[]
     for user in auther:
+        print(user)
         new_list.append({"id":user.id,"auther":user.auther,"email":user.email,"title":user.title,"date":user.date})
         print(new_list)
     return jsonify(new_list)
+    
 
     
 
